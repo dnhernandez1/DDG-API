@@ -16,11 +16,11 @@ def getText(response):
     dataText = []
     for i in data["RelatedTopics"]:
         dataText.append(i["Text"].split())
-    confirm = removeName(dataText)
+    confirm = results(dataText)
     return confirm
 
 
-def removeName(dataText):
+def results(dataText):
     # this will remove the last name of the president that was found in the
     # returned Text field. Once the loop has gone through all names that were
     # returned, if successful, will return a 0 confirming that all names were
