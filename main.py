@@ -3,16 +3,34 @@ verify the accuracy of the returned results.
 """
 import requests
 import json
-"""
-params = {
-    "engine": "duckduckgo",
-    "q": "Presidents of the united states",
-    "output": "JSON",
-    "api_key": "994b429f5f2d6895d2f69d0bfb16d7a5f9bb1f55c73da8ae8882fead2e3a33f8"
-}
-"""
-response = requests.get(
-    "https://api.duckduckgo.com/?q=presidents+of+the+united+states&format=json&pretty=1&no_html=1&skip_disambig=1")
-print(response.status_code)
-print(response.text)
-data = json.loads(response.text)
+import pytest
+
+# List of President last names.
+presLastName = ['Washington', 'Adams', 'Jefferson', 'Madison', 'Monroe', 'Adams', 'Jackson', 'Buren', 'Harrison', 'Tyler', 'Polk', 'Taylor', 'Fillmore', 'Pierce', 'Buchanan', 'Lincoln', 'Johnson', 'Grant', 'Hayes', 'Garfield', 'Arthur', 'Cleveland', 'Harrison', 'Cleveland', 'McKinley', 'Roosevelt', 'Taft', 'Wilson', 'Harding', 'Coolidge', 'Hoover', 'Roosevelt', 'Truman', 'Eisenhower', 'Kennedy', 'Johnson', 'Nixon', 'Ford', 'Carter', 'Reagan', 'Bush', 'Clinton', 'Bush', 'Obama', 'Trump', 'Biden']
+response = requests.get("https://api.duckduckgo.com/?q=presidents+of+the+united+states&format=json&pretty=1&no_html=1&skip_disambig=1")
+
+
+def getText(response):
+    data = json.loads(response.text)
+    # list of all text words
+    dataText = []
+    for i in data["RelatedTopics"]:
+        dataText.append(i["Text"].split())
+    confirm = removeName(dataText)
+    return confirm
+
+
+def removeName(dataText):
+    # this will remove the last name of the president that was found in the returned Text Field.
+    count = len(presLastName)
+    textBreakDown = []
+    for i in dataText:
+        for j in i:
+            if j in presLastName:
+                presLastName.remove(j)
+                textBreakDown.append(j)
+                count -= 1
+    return count
+
+if __name__ == '__main__':
+    print(getText(response))
