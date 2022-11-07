@@ -21,7 +21,10 @@ def getText(response):
 
 
 def removeName(dataText):
-    # this will remove the last name of the president that was found in the returned Text Field.
+    # this will remove the last name of the president that was found in the
+    # returned Text field. Once the loop has gone through all names that were
+    # returned, if successful, will return a 0 confirming that all names were
+    # successfully included in the search results provided by duckduckgo.
     count = len(presLastName)
     textBreakDown = []
     for i in dataText:
